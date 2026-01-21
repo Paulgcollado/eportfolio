@@ -6,9 +6,6 @@ use Tqdev\PhpCrudApi\Api;
 use Tqdev\PhpCrudApi\Config\Config;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\API\ComentariosController;
-use App\Http\Controllers\API\AsignacionesController;
-use App\Http\Controllers\API\CriteriosTareasController;
 use App\Http\Controllers\API\EvaluacionEvidenciaController;
 use App\Http\Controllers\API\TareasController;
 
@@ -17,26 +14,15 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 });
 
 Route::prefix('v1')->group(function () {
-    Route::apiResource('comentarios', ComentariosController::class)
-        ->parameters([
-            'comentarios' => 'comentario'
-        ]);
-
-    Route::apiResource('asignaciones', AsignacionesController::class)
-        ->parameters([
-            'asignaciones' => 'asignacion'
-        ]);
-
-    Route::apiResource('criterios-tareas', CriteriosTareasController::class)
-        ->parameters([
-            'criterios-tareas' => 'criterioTarea'
-        ]);
-
     // --------------------------------------------------
     // TAREAS
-    //Route::apiResource('tareas', TareasController::class);
-    //Route::apiResource('criterios-evaluacion.tareas', TareasController::class)->parameters(['criterios-evaluacion' => 'criterios']);
-    //Route::apiResource('resultados-aprendizaje.tareas', TareasController::class)->parameters(['resultados-aprendizaje' => 'resultados']);
+    Route::apiResource('tareas', TareasController::class)->only('store', 'update', 'destroy');
+    Route::apiResource('criterios-evaluacion.tareas', TareasController::class)
+        ->only('index', 'show')
+        ->parameters(['criterios-evaluacion' => 'criterios']);
+    Route::apiResource('resultados-aprendizaje.tareas', TareasController::class)
+        ->only('index')
+        ->parameters(['resultados-aprendizaje' => 'resultados']);
 
     // --------------------------------------------------
     // EVIDENCIAS

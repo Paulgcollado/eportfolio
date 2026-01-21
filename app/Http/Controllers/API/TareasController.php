@@ -10,20 +10,28 @@ use App\Models\ResultadoAprendizaje;
 use App\Models\Tarea;
 use Illuminate\Http\Request;
 
-use function PHPUnit\Framework\isEmpty;
-
 class TareasController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request, CriterioEvaluacion $criterios)
+    public function index(Request $request, CriterioEvaluacion $criterios, ResultadoAprendizaje $resultados)
     {
+        if ($resultados->exists) {
+            $criteriosIds = CriterioEvaluacion::where('resultado_aprendizaje_id', $resultados->id)->pluck('id');
+            return TareaResource::collection(
+                Tarea::whereIn('criterios_evaluacion_id', $criteriosIds)
+                    ->orderBy($request->_sort ?? 'id', $request->_order ?? 'asc')
+                    ->paginate($request->perPage)
+            );
+        }
+
         return TareaResource::collection(
             Tarea::where('criterios_evaluacion_id', $criterios->id)
                 ->orderBy($request->_sort ?? 'id', $request->_order ?? 'asc')
                 ->paginate($request->perPage)
         );
+
     }
 
     /**
@@ -50,8 +58,8 @@ class TareasController extends Controller
      */
     public function update(Request $request, Tarea $tarea)
     {
-        $cicloData = json_decode($request->getContent(), true);
-        $tarea->update($cicloData);
+        $tareaData = json_decode($request->getContent(), true);
+        $tarea->update($tareaData);
         return new TareaResource($tarea);
     }
 

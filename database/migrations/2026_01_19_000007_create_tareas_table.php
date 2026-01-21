@@ -20,7 +20,7 @@ return new class extends Migration
             $table->dateTime('fecha_apertura');
             $table->dateTime('fecha_cierre');
             $table->boolean('activo');
-            $table->text('enunciado');
+            $table->text('observaciones')->nullable();
             $table->timestamps();
         });
     }
