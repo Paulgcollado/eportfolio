@@ -14,6 +14,7 @@ use App\Http\Controllers\API\TareasController;
 use App\Http\Controllers\API\CriterioEvaluacionController;
 use App\Http\Controllers\API\MatriculasController;
 use App\Http\Controllers\API\ResultadoAprendizajeController;
+use App\Http\Controllers\API\RolController;
 
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
@@ -32,7 +33,7 @@ Route::prefix('v1')->group(function () {
     // ------------------------------------------------
     // USER-ASIGNACIONES
     Route::get('users/{user_id}/asignaciones-revision', [AsignacionesController::class, 'asignacionUsuarios']);
-    
+
     // --------------------------------------------------
     // TAREAS
     Route::apiResource('tareas', TareasController::class)->only('store', 'update', 'destroy');
@@ -53,7 +54,7 @@ Route::prefix('v1')->group(function () {
     Route::apiResource('evidencias.evaluaciones-evidencias', EvaluacionEvidenciaController::class)->parameters([
         'evaluaciones-evidencias' => 'evaluacionEvidencia'
     ]);
-  
+
     // --------------------------------------------------
     // MATRICULAS
     Route::apiResource('modulos-formativos.matriculas', MatriculasController::class)->parameters([
@@ -70,6 +71,12 @@ Route::prefix('v1')->group(function () {
     // CRITERIOS EVALUACION
     Route::apiResource('resultados-aprendizaje.criterios-evaluacion', CriterioEvaluacionController::class)->parameters([
         'resultados-aprendizaje' => 'resultadoAprendizaje'
+    ]);
+
+    // --------------------------------------------------
+    // ROLES
+    Route::apiResource('roles', RolController::class)->parameters([
+        'roles' => 'rol'
     ]);
 });
 
