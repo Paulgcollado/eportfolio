@@ -8,5 +8,5 @@ class Comentarios extends Model
 {
     protected $table = 'comentarios';
 
-    protected $fillable = ['evidencia_id', 'user_id', 'comentario', 'tipo'];
+    protected $fillable = ['evidencia_id', 'user_id', 'contenido', 'tipo'];
 }

@@ -7,6 +7,7 @@ use App\Http\Resources\ComentariosResource;
 use App\Models\Comentarios;
 use App\Models\Evidencia;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ComentariosController extends Controller
 {
@@ -15,6 +16,9 @@ class ComentariosController extends Controller
      */
     public function index(Request $request, Evidencia $evidencia)
     {
+        $familiasProfesionalesId = DB::table('familias_profesionales')->pluck("id")->toArray();
+        $fake = fake()->randomElement($familiasProfesionalesId);
+
         return ComentariosResource::collection(
             Comentarios::where('evidencia_id', $evidencia->id)
                 ->orderBy($request->_sort ?? 'id', $request->_order ?? 'asc')

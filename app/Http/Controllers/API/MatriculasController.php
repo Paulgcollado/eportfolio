@@ -4,7 +4,9 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\MatriculaResource;
+use App\Http\Resources\ModuloFormativoResource;
 use App\Models\Matricula;
+use App\Models\ModuloFormativo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -27,27 +29,27 @@ class MatriculasController extends Controller
     public function store(Request $request)
     {
         $matricula = json_decode($request->getContent(), true);
-
         $matricula = Matricula::create($matricula);
-
         return new MatriculaResource($matricula);
     }
 
     // Devuelve una colección de módulos formativos en los que el usuario autenticado tiene matrícula.
-    /*
-        public function modulosMatriculados(Request $request)
-        {
-            $emailAutenticado = Auth::user()->email;
-            $usuarios = DB::table('users')->where('email', $emailAutenticado)->get();
-            $usuario_id = $usuarios->id;
+    public function modulosMatriculados(Request $request)
+    {
+        // Usuario autenticado.
+        $user = Auth::user();
 
-            $modulos_matriculados = DB::table('matriculas')->where('estudiante_id', $usuario_id);
+        // Matrículas donde el estudiante es el id del usuario autenticado.
+        $matriculas = Matricula::where("estudiante_id", $user->id)->get();
 
-            return ModuloFormativoResource::collection(
-                ModuloFormativo::whereIn('id', $modulos_matriculados)
-            );
-        }
-    */
+        // Modulos formativos cuyo estudiante id es
+        return ModuloFormativoResource::collection(
+            ModuloFormativo::where("id", $matriculas->modulo_formativo_id)
+                ->orderBy($request->sort ?? 'id', $request->order ?? 'asc')
+                ->paginate($request->per_page)
+        );
+    }
+
 
     /**
      * Display the specified resource.
@@ -64,7 +66,6 @@ class MatriculasController extends Controller
     {
         $matriculaData = json_decode($request->getContent(), true);
         $matricula->update($matriculaData);
-
         return new MatriculaResource($matricula);
     }
 

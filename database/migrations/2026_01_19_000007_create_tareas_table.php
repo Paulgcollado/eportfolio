@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('tareas', function (Blueprint $table) {
             $table->id();
 
-            $table->unsignedBigInteger('criterios_evaluacion_id')->nullable();
+            $table->unsignedBigInteger('criterios_evaluacion_id');
             $table->foreign('criterios_evaluacion_id')->references('id')->on('criterios_evaluacion')->onDelete('cascade');
 
             $table->dateTime('fecha_apertura');

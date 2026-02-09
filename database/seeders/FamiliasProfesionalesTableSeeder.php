@@ -21,6 +21,7 @@ class FamiliasProfesionalesTableSeeder extends Seeder
                 'nombre' => $familia['nombre'],
             ]);
         }
+
         $this->command->info('¡Tabla familias_profesionales inicializada con datos!');
     }
 

@@ -12,15 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('evaluaciones-evidencias', function (Blueprint $table) {
-            $table->id()->primary();
+            $table->id();
 
             $table->unsignedBigInteger('evidencia_id');
-            $table->foreign('evidencia_id')->references('id')->on('evidencias')->onDelete('cascade'); //evidencias (tabla)
+            $table->foreign('evidencia_id')->references('id')->on('evidencias')->onDelete('cascade');
             $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade'); //users (tabla)
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
             $table->decimal('puntuacion');
-            $table->enum('estado_validacion', ['pendiente', 'aprobada', 'rechazada']);
+            $table->enum('estado', ['pendiente', 'aprobada', 'rechazada']);
             $table->text('observaciones');
 
             $table->timestamps();

@@ -60,6 +60,7 @@ Route::prefix('v1')->group(function () {
     Route::apiResource('modulos-formativos.matriculas', MatriculasController::class)->parameters([
         'modulos-formativos' => 'moduloFormativo'
     ]);
+    Route::middleware(['auth:sanctum'])->get('modulos-matriculados', [MatriculasController::class, "modulosMatriculados"]);
 
     // --------------------------------------------------
     // RESULTADOS APRENDIZAJE

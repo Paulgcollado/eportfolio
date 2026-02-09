@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('resultados_aprendizaje', function (Blueprint $table) {
             $table->id();
-            //$table->foreignId('modulo_formativo_id')->constrained('ciclos_formativos')->onDelete('cascade'); //ciclo_formativo (tabla)
+            $table->foreignId('modulo_formativo_id')->constrained('modulos_formativos')->onDelete('cascade');
             $table->string('codigo', 50);
             $table->string('descripcion');
-            $table->float('peso_procentaje')->min(0)->max(100);
+            $table->decimal('peso_procentaje', 3, 2)->min(0.00)->max(100.00);
             $table->integer('orden')->min(1);
             $table->timestamps();
         });
