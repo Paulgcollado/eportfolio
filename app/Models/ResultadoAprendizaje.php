@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class ResultadoAprendizaje extends Model
 {
-        protected $table = 'resultados_aprendizaje';
+    use HasFactory;
 
-        protected $fillable = ['modulo_formativo_id', 'codigo', 'descripcion', 'peso_procentaje', 'orden'];
+    protected $table = 'resultados_aprendizaje';
+
+    protected $fillable = ['modulo_formativo_id', 'codigo', 'descripcion', 'peso_porcentaje', 'orden'];
 }

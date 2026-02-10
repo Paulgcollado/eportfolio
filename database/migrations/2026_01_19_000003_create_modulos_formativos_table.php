@@ -15,12 +15,15 @@ return new class extends Migration
             $table->id();
             $table->foreignId('ciclo_formativo_id')->constrained('ciclos_formativos')->onDelete('cascade');
             $table->string("nombre");
-            $table->string("codigo");
+            $table->string("codigo")->unique();
             $table->integer("horas_totales");
             $table->string("curso_escolar");
             $table->string("centro");
-            $table->foreignId('docente_id')->constrained('users')->onDelete('cascade');
-            $table->string("descripcion");
+
+            $table->unsignedBigInteger("docente_id")->nullable();
+            $table->foreign("docente_id")->references("id")->on("users")->onDelete("cascade");
+
+            $table->string("descripcion")->nullable(true);
             $table->timestamps();
         });
     }

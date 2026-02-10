@@ -18,7 +18,7 @@ class FamiliaProfesionalFactory extends Factory
     {
         return [
             'nombre' => fake()->name(),
-            'codigo' => fake()->text(20),
+            'codigo' => fake()->unique()->text(20),
             'descripcion' => fake()->text(50)
         ];
     }

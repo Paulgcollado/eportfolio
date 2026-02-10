@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\FamiliaProfesional;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -18,10 +19,10 @@ class CicloFormativoFactory extends Factory
     public function definition(): array
     {
         return [
-            'familia_profesional_id' => fake()->numberBetween(1, 26),
+            'familia_profesional_id' => FamiliaProfesional::factory(),
             'nombre' => fake()->name(),
-            'codigo' => fake()->text(5),
-            'grado' => fake()->randomElement(['básico', 'medio', 'superior']),
+            'codigo' => fake()->unique()->text(5),
+            'grado' => fake()->randomElement(['basico', 'medio', 'superior']),
             'descripcion' => fake()->text(50),
         ];
     }

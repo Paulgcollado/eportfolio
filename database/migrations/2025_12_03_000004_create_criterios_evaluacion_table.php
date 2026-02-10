@@ -13,7 +13,10 @@ return new class extends Migration
     {
         Schema::create('criterios_evaluacion', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('resultado_aprendizaje_id')->constrained('resultados_aprendizaje')->onDelete('cascade');
+
+            $table->unsignedBigInteger("resultado_aprendizaje_id")->nullable();
+            $table->foreign("resultado_aprendizaje_id")->references("id")->on("resultados_aprendizaje")->onDelete("cascade");
+
             $table->string('codigo', 50);
             $table->string('descripcion');
             $table->tinyInteger('peso_porcentaje')->unsigned()->nullable();

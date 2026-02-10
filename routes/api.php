@@ -7,12 +7,15 @@ use Tqdev\PhpCrudApi\Api;
 use Tqdev\PhpCrudApi\Config\Config;
 use App\Http\Controllers\API\ComentariosController;
 use App\Http\Controllers\API\AsignacionesController;
+use App\Http\Controllers\API\CiclosFormativosController;
+use App\Http\Controllers\API\FamiliasProfesionalesController;
 use App\Http\Controllers\API\CriteriosTareasController;
 use App\Http\Controllers\API\EvaluacionEvidenciaController;
 use App\Http\Controllers\API\EvidenciaController;
 use App\Http\Controllers\API\TareasController;
 use App\Http\Controllers\API\CriterioEvaluacionController;
 use App\Http\Controllers\API\MatriculasController;
+use App\Http\Controllers\API\ModuloFormativoController;
 use App\Http\Controllers\API\ResultadoAprendizajeController;
 use App\Http\Controllers\API\RolController;
 
@@ -22,17 +25,33 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 
 // Rutas PHP-CRUD-API
 Route::prefix('v1')->group(function () {
-    // ------------------------------------------------
-    // COMENTARIOS
-    Route::apiResource('evidencias.comentarios', ComentariosController::class);
 
-    // ------------------------------------------------
+    // --------------------------------------------------
     // ASIGNACIONES
     Route::apiResource('evidencias.asignaciones-revision', AsignacionesController::class);
-
-    // ------------------------------------------------
-    // USER-ASIGNACIONES
     Route::get('users/{user_id}/asignaciones-revision', [AsignacionesController::class, 'asignacionUsuarios']);
+
+    // --------------------------------------------------
+    // CICLOS FORMATIVOS
+    Route::apiResource('familias-profesionales.ciclos-formativos', CiclosFormativosController::class)
+        ->parameters([
+            'familias-profesionales' => 'familiaProfesional',
+            'ciclos-formativos' => 'cicloFormativo'
+        ]);
+
+    // --------------------------------------------------
+    // MODULOS FORMATIVOS
+    Route::apiResource('ciclos-formativos.modulos-formativos', ModuloFormativoController::class)
+        ->parameters([
+            'ciclos-formativos' => 'cicloFormativo',
+            'modulos-formativos' => 'moduloFormativo'
+        ]);
+    Route::get('modulos-impartidos', [ModuloFormativoController::class, "modulosImpartidos"]);
+
+
+    // --------------------------------------------------
+    // COMENTARIOS
+    Route::apiResource('evidencias.comentarios', ComentariosController::class);
 
     // --------------------------------------------------
     // TAREAS
@@ -50,6 +69,13 @@ Route::prefix('v1')->group(function () {
     Route::get('users/{parent_id}/evidencias', [EvidenciaController::class, 'showUserEvidencias']);
 
     // --------------------------------------------------
+    // FAMILIAS PROFESIONALES
+    Route::apiResource('familias-profesionales', FamiliasProfesionalesController::class)
+        ->parameters([
+            'familias-profesionales' => 'familiaProfesional'
+        ]);
+
+    // --------------------------------------------------
     // EVALUACION EVIDENCIAS
     Route::apiResource('evidencias.evaluaciones-evidencias', EvaluacionEvidenciaController::class)->parameters([
         'evaluaciones-evidencias' => 'evaluacionEvidencia'
@@ -65,13 +91,15 @@ Route::prefix('v1')->group(function () {
     // --------------------------------------------------
     // RESULTADOS APRENDIZAJE
     Route::apiResource('modulos-formativos.resultados-aprendizaje', ResultadoAprendizajeController::class)->parameters([
-        'modulos-formativos' => 'moduloFormativo'
+        'modulos-formativos' => 'moduloFormativo',
+        'resultados-aprendizaje' => 'resultadoAprendizaje'
     ]);
 
     // --------------------------------------------------
     // CRITERIOS EVALUACION
     Route::apiResource('resultados-aprendizaje.criterios-evaluacion', CriterioEvaluacionController::class)->parameters([
-        'resultados-aprendizaje' => 'resultadoAprendizaje'
+        'resultados-aprendizaje' => 'resultadoAprendizaje',
+        'criterios-evaluacion' => 'criterioEvaluacion'
     ]);
 
     // --------------------------------------------------

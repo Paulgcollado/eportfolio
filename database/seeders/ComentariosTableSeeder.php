@@ -15,7 +15,7 @@ class ComentariosTableSeeder extends Seeder
             Comentarios::insert([
                 'evidencia_id' => $comentario['evidencia_id'],
                 'user_id' => $comentario['user_id'],
-                'comentario' => $comentario['comentario'],
+                'contenido' => $comentario['contenido'],
                 'tipo' => $comentario['tipo'],
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -26,10 +26,10 @@ class ComentariosTableSeeder extends Seeder
     }
 
     public static $comentarios = [
-        ['evidencia_id' => 1, 'user_id' => 1, 'comentario' => 'Comentario 1', 'tipo' => 'profesor'],
-        ['evidencia_id' => 2, 'user_id' => 2, 'comentario' => 'Comentario 2', 'tipo' => 'estudiante'],
-        ['evidencia_id' => 3, 'user_id' => 3, 'comentario' => 'Comentario 3', 'tipo' => 'profesor'],
-        ['evidencia_id' => 4, 'user_id' => 1, 'comentario' => 'Comentario 4', 'tipo' => 'estudiante'],
-        ['evidencia_id' => 5, 'user_id' => 2, 'comentario' => 'Comentario 5', 'tipo' => 'profesor'],
+        ['evidencia_id' => 1, 'user_id' => 1, 'contenido' => 'Comentario 1', 'tipo' => 'profesor'],
+        ['evidencia_id' => 2, 'user_id' => 2, 'contenido' => 'Comentario 2', 'tipo' => 'estudiante'],
+        ['evidencia_id' => 3, 'user_id' => 3, 'contenido' => 'Comentario 3', 'tipo' => 'profesor'],
+        ['evidencia_id' => 4, 'user_id' => 1, 'contenido' => 'Comentario 4', 'tipo' => 'estudiante'],
+        ['evidencia_id' => 5, 'user_id' => 2, 'contenido' => 'Comentario 5', 'tipo' => 'profesor'],
     ];
 }
