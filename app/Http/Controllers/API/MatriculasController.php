@@ -16,19 +16,21 @@ class MatriculasController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index(Request $request, ModuloFormativo $moduloFormativo)
     {
         return MatriculaResource::collection(
-            Matricula::orderBy($request->sort ?? 'id', $request->order ?? 'asc')
-            ->paginate($request->per_page));
+            Matricula::where('modulo_formativo_id', $moduloFormativo->id)
+                ->orderBy($request->sort ?? 'estudiante_id', $request->order ?? 'asc')
+                ->paginate($request->per_page));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, ModuloFormativo $moduloFormativo)
     {
         $matricula = json_decode($request->getContent(), true);
+        $matricula['modulo_formativo_id'] = $moduloFormativo->id;
         $matricula = Matricula::create($matricula);
         return new MatriculaResource($matricula);
     }
@@ -54,16 +56,18 @@ class MatriculasController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Matricula $matricula)
+    public function show(ModuloFormativo $moduloFormativo, Matricula $matricula)
     {
+        abort_if($matricula->modulo_formativo_id !== $moduloFormativo->id, 404, "No se encuentra la matrícula");
         return new MatriculaResource($matricula);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Matricula $matricula)
+    public function update(Request $request, ModuloFormativo $moduloFormativo, Matricula $matricula)
     {
+        abort_if($matricula->modulo_formativo_id !== $moduloFormativo->id, 404, "No se encuentra la matrícula");
         $matriculaData = json_decode($request->getContent(), true);
         $matricula->update($matriculaData);
         return new MatriculaResource($matricula);
@@ -72,11 +76,12 @@ class MatriculasController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Matricula $matricula)
+    public function destroy(ModuloFormativo $moduloFormativo, Matricula $matricula)
     {
+        abort_if($matricula->modulo_formativo_id !== $moduloFormativo->id, 404, "No se encuentra la matrícula");
         try {
             $matricula->delete();
-            return response()->json(null, 204);
+            return response()->json(['message' => 'Matricula eliminado correctamente'], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Error: ' . $e->getMessage()

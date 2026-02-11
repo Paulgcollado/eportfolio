@@ -12,8 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('evidencias', function (Blueprint $table) {
-            $table->foreignId('estudiante_id')->after('id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('criterio_evaluacion_id')->after('estudiante_id')->constrained('criterios_evaluacion')->onDelete('cascade');
+            $table->unsignedBigInteger("estudiante_id")->nullable();
+            $table->foreign("estudiante_id")->references("id")->on("users")->onDelete("cascade");
+
+            $table->unsignedBigInteger("criterio_evaluacion_id")->nullable();
+            $table->foreign("criterio_evaluacion_id")->references("id")->on("criterios_evaluacion")->onDelete("cascade");
+
             $table->dropColumn('tarea_id');
         });
     }
@@ -24,8 +28,11 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('evidencias', function (Blueprint $table) {
-            //$table->dropColumn('estudiante_id');
-            //$table->dropColumn('criterio_evaluacion_id');
+            $table->dropForeign('evidencias_estudiante_id_foreign');
+            $table->dropColumn('estudiante_id');
+
+            $table->dropForeign('evidencias_criterio_evaluacion_id_foreign');
+            $table->dropColumn('criterio_evaluacion_id');
         });
     }
 };

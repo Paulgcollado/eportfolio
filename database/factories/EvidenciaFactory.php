@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\CriterioEvaluacion;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,10 +19,10 @@ class EvidenciaFactory extends Factory
     public function definition(): array
     {
         return [
-            'estudiante_id' => fake()->numberBetween(1, 11),
-            'criterio_evaluacion_id' => fake()->numberBetween(1, 22),
+            'estudiante_id' => User::factory(),
+            'criterio_evaluacion_id' => CriterioEvaluacion::factory(),
             'url' => fake()->url(),
-            'descripcion' => fake()->text(50),
+            'descripcion' => fake()->paragraph(),
             'estado_validacion' => fake()->randomElement(['pendiente', 'validada', 'rechazada'])
         ];
     }

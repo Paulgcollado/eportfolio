@@ -3,12 +3,13 @@
 namespace Database\Factories;
 
 use App\Models\ModuloFormativo;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\ResultadoAprendizaje>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Matricula>
  */
-class ResultadoAprendizajeFactory extends Factory
+class MatriculaFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -19,10 +20,7 @@ class ResultadoAprendizajeFactory extends Factory
     {
         return [
             'modulo_formativo_id' => ModuloFormativo::factory(),
-            'codigo' => fake()->unique()->text(20),
-            'descripcion' => fake()->text(50),
-            'peso_porcentaje' => fake()->randomFloat(2, 0, 100),
-            'orden' => fake()->randomNumber(),
+            'estudiante_id' => User::factory()
         ];
     }
 }

@@ -19,7 +19,7 @@ return new class extends Migration
 
             $table->string('codigo', 50);
             $table->string('descripcion');
-            $table->tinyInteger('peso_porcentaje')->unsigned()->nullable();
+            $table->decimal('peso_porcentaje', 5, 2);
             $table->integer('orden')->unsigned();
             $table->timestamps();
         });

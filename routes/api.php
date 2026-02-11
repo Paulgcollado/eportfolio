@@ -18,13 +18,17 @@ use App\Http\Controllers\API\MatriculasController;
 use App\Http\Controllers\API\ModuloFormativoController;
 use App\Http\Controllers\API\ResultadoAprendizajeController;
 use App\Http\Controllers\API\RolController;
-
-Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
-    return $request->user();
-});
+use App\Http\Controllers\API\UserController;
 
 // Rutas PHP-CRUD-API
 Route::prefix('v1')->group(function () {
+
+    // --------------------------------------------------
+    // USERS
+    Route::apiResource('users', UserController::class)->only("index", "show", "update");
+    Route::middleware(['auth:sanctum'])->get('user', [UserController::class, 'authUser']);
+    Route::get('docentes', [UserController::class, 'docentes']);
+    Route::get('estudiantes', [UserController::class, 'estudiantes']);
 
     // --------------------------------------------------
     // ASIGNACIONES
@@ -84,7 +88,8 @@ Route::prefix('v1')->group(function () {
     // --------------------------------------------------
     // MATRICULAS
     Route::apiResource('modulos-formativos.matriculas', MatriculasController::class)->parameters([
-        'modulos-formativos' => 'moduloFormativo'
+        'modulos-formativos' => 'moduloFormativo',
+        'matriculas' => 'matricula'
     ]);
     Route::middleware(['auth:sanctum'])->get('modulos-matriculados', [MatriculasController::class, "modulosMatriculados"]);
 
@@ -124,8 +129,6 @@ Route::any('/{any}', function (ServerRequestInterface $request) {
         $records = json_decode($response->getBody()->getContents())->records;
         $response = response()->json($records, 200, $headers = ['X-Total-Count' => count($records)]);
     } catch (\Throwable $th) {
-
     }
     return $response;
-
 })->where('any', '.*');

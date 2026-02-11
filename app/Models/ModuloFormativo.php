@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class ModuloFormativo extends Model
 {
@@ -21,4 +23,19 @@ class ModuloFormativo extends Model
         "docente_id",
         "descripcion"
     ];
+
+    // ------------------------------------------------------------------------
+    // RELACIONES
+    //
+    // Varios módulos son impartidos por un docente.
+    public function docente(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'docente_id');
+    }
+
+    // En varios módulos están matriculados varios estudiantes.
+    public function estudiantes(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'matriculas', 'estudiante_id', 'modulo_formativo_id');
+    }
 }

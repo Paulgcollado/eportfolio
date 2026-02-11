@@ -19,10 +19,10 @@ class CriterioEvaluacionFactory extends Factory
     {
         return [
             'resultado_aprendizaje_id' => ResultadoAprendizaje::factory(),
-            'codigo' => fake()->unique()->text(20),
-            'descripcion' => fake()->text(50),
-            'peso_porcentaje' => fake()->randomFloat(3, 2),
-            'orden' => fake()->randomNumber()
+            'codigo' => fake()->unique()->regexify('[A-Z]{3}[0-9]{3}'),
+            'descripcion' => fake()->paragraph(),
+            'peso_porcentaje' => fake()->randomFloat(2, 0, 100),
+            'orden' => fake()->numberBetween(1, 100)
         ];
     }
 }

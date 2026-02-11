@@ -27,7 +27,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Gate::before(function (User $user, string $ability) {
-            if ($user->isAdministrator()) {
+            if ($user->esAdministrador()) {
                 return true;
             }
         });

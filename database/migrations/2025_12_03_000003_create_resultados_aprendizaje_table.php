@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('codigo', 50)->unique();
             $table->string('descripcion');
-            $table->decimal('peso_porcentaje', 3, 2)->min(0.00)->max(100.00);
+            $table->decimal('peso_porcentaje', 5, 2);
             $table->integer('orden')->min(1);
             $table->timestamps();
         });
