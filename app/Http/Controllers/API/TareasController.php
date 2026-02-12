@@ -15,23 +15,23 @@ class TareasController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request, CriterioEvaluacion $criterios, ResultadoAprendizaje $resultados)
+    public function index(Request $request, CriterioEvaluacion $criterios)
     {
-        if ($resultados->exists) {
-            $criteriosIds = CriterioEvaluacion::where('resultado_aprendizaje_id', $resultados->id)->pluck('id');
-            return TareaResource::collection(
-                Tarea::whereIn('criterios_evaluacion_id', $criteriosIds)
-                    ->orderBy($request->_sort ?? 'id', $request->_order ?? 'asc')
-                    ->paginate($request->perPage)
-            );
-        }
-
         return TareaResource::collection(
-            Tarea::where('criterios_evaluacion_id', $criterios->id)
+            $criterios->tareas()
                 ->orderBy($request->_sort ?? 'id', $request->_order ?? 'asc')
-                ->paginate($request->perPage)
+                ->paginate($request->per_page)
         );
+    }
 
+    public function tareasByRA(Request $request, ResultadoAprendizaje $resultadoAprendizaje)
+    {
+        $criteriosIds = CriterioEvaluacion::where('resultado_aprendizaje_id', $resultadoAprendizaje->id)->pluck('id');
+        return TareaResource::collection(
+            Tarea::whereIn('criterios_evaluacion_id', $criteriosIds)
+                ->orderBy($request->_sort ?? 'id', $request->_order ?? 'asc')
+                ->paginate($request->per_page)
+        );
     }
 
     /**
@@ -39,7 +39,13 @@ class TareasController extends Controller
      */
     public function store(Request $request)
     {
-        $tarea = json_decode($request->getContent(), true);
+        $tarea = $request->validate([
+            'criterios_evaluacion_id' => 'required|array',
+            'fecha_apertura' => 'required',
+            'fecha_cierre' => 'required',
+            'activo' => 'required'
+        ]);
+
         $tarea = Tarea::create($tarea);
         return new TareaResource($tarea);
     }
@@ -70,7 +76,7 @@ class TareasController extends Controller
     {
         try {
             $tarea->delete();
-            return response()->json(null, 204);
+            return response()->json(['message' => 'Tarea eliminado correctamente'], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Error: ' . $e->getMessage()

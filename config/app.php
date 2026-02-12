@@ -126,6 +126,8 @@ return [
     'admin' => [
         'email' => env('ADMIN_EMAIL', 'admin@example.com'),
         'password' => env('ADMIN_PASSWORD', 'password')
-    ]
+    ],
+
+    'max_modulos_matricula' => 5
 
 ];

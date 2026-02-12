@@ -21,7 +21,8 @@ class MatriculasController extends Controller
         return MatriculaResource::collection(
             Matricula::where('modulo_formativo_id', $moduloFormativo->id)
                 ->orderBy($request->sort ?? 'estudiante_id', $request->order ?? 'asc')
-                ->paginate($request->per_page));
+                ->paginate($request->per_page)
+        );
     }
 
     /**
@@ -29,27 +30,22 @@ class MatriculasController extends Controller
      */
     public function store(Request $request, ModuloFormativo $moduloFormativo)
     {
-        $matricula = json_decode($request->getContent(), true);
-        $matricula['modulo_formativo_id'] = $moduloFormativo->id;
-        $matricula = Matricula::create($matricula);
+        $user = $request->user();
+
+        $matricula = Matricula::create([
+            'estudiante_id' => $user->id,
+            'modulo_formativo_id' => $moduloFormativo->id
+        ]);
+
         return new MatriculaResource($matricula);
     }
 
     // Devuelve una colección de módulos formativos en los que el usuario autenticado tiene matrícula.
     public function modulosMatriculados(Request $request)
     {
-        // Usuario autenticado.
-        $user = Auth::user();
-
-        // Matrículas donde el estudiante es el id del usuario autenticado.
-        $matriculas = Matricula::where("estudiante_id", $user->id)->get();
-
-        // Modulos formativos cuyo estudiante id es
-        return ModuloFormativoResource::collection(
-            ModuloFormativo::where("id", $matriculas->modulo_formativo_id)
-                ->orderBy($request->sort ?? 'id', $request->order ?? 'asc')
-                ->paginate($request->per_page)
-        );
+        $user = $request->user();
+        $matriculas = $user->modulosMatriculados;
+        return MatriculaResource::collection($matriculas);
     }
 
 
@@ -87,5 +83,66 @@ class MatriculasController extends Controller
                 'message' => 'Error: ' . $e->getMessage()
             ], 400);
         }
+    }
+
+    public function matriculasLote(Request $request)
+    {
+        $user = $request->user();
+        $validated = $request->validate([
+            'estudiantes_id' => 'sometimes|array',
+            'modulos_formativos_id' => 'required|array'
+        ]);
+
+        $matriculas = [];
+        if ($user->esAdministrador()) {
+            $matriculas = $this->generarMatriculasAdmin($validated);
+        } else {
+            $matriculas = $this->generarMatriculasEstudiante($validated['modulos_formativos_id'], $user);
+        }
+
+        return MatriculaResource::collection($matriculas);
+    }
+
+    /**
+     * GENERAR MATRÍCULAS COMO ADMINISTRADOR IMPLICA QUE PUEDE CREAR INFINITAS.
+     */
+    private function generarMatriculasAdmin($data)
+    {
+        $estudiantesIds = $data['estudiantes_id'];
+        $modulosIds = $data['modulos_formativos_id'];
+
+        $loteMatriculas = [];
+        foreach ($estudiantesIds as $estudiante) {
+            foreach ($modulosIds as $modulo) {
+                $matricula = Matricula::create([
+                    'estudiante_id' => $estudiante,
+                    'modulo_formativo_id' => $modulo
+                ]);
+                array_push($loteMatriculas, $matricula);
+            }
+        }
+
+        return $loteMatriculas;
+    }
+
+    /**
+     * GENERAR MATRÍCULAS SIN SER ADMINISTRADOR IMPLICA QUE EL USUARIO SE MATRICULA HASTA UN NÚMERO DEFINIDO DE MODULOS.
+     */
+    private function generarMatriculasEstudiante($modulos, $user)
+    {
+        // LIMITAR HASTA LOS 5 PRIMEROS LOTES DE MATRÍCULAS
+        $limit = config('app.max_modulos_matricula', 5);
+        $modulos = array_slice($modulos, 0, $limit);
+
+        $loteMatriculas = [];
+        foreach ($modulos as $modulo) {
+            $matricula = Matricula::create([
+                'estudiante_id' => $user->id,
+                'modulo_formativo_id' => $modulo
+            ]);
+            array_push($loteMatriculas, $matricula);
+        }
+
+        return $loteMatriculas;
     }
 }

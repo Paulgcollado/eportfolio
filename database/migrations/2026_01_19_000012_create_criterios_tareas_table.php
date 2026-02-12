@@ -12,11 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('criterios_tareas', function (Blueprint $table) {
-            //$table->foreignId('tarea_id')->constrained('tareas')->onDelete('cascade');
-            //$table->foreignId('actividad_id')->constrained('actividades')->onDelete('cascade');
-            $table->unsignedBigInteger('tarea_id');
-            $table->unsignedBigInteger('actividad_id');
-            $table->primary(['tarea_id', 'actividad_id']);
+            $table->unsignedBigInteger("tarea_id")->nullable();
+            $table->foreign("tarea_id")->references("id")->on("tareas")->onDelete("cascade");
+
+            $table->unsignedBigInteger("criterio_evaluacion_id")->nullable();
+            $table->foreign("criterio_evaluacion_id")->references("id")->on("criterios_evaluacion")->onDelete("cascade");
+
+            $table->primary(['tarea_id', 'criterio_evaluacion_id']);
             $table->timestamps();
         });
     }

@@ -60,12 +60,9 @@ Route::prefix('v1')->group(function () {
     // --------------------------------------------------
     // TAREAS
     Route::apiResource('tareas', TareasController::class)->only('store', 'update', 'destroy');
-    Route::apiResource('criterios-evaluacion.tareas', TareasController::class)
-        ->only('index', 'show')
+    Route::apiResource('criterios-evaluacion.tareas', TareasController::class)->only('index', 'show')
         ->parameters(['criterios-evaluacion' => 'criterios']);
-    Route::apiResource('resultados-aprendizaje.tareas', TareasController::class)
-        ->only('index')
-        ->parameters(['resultados-aprendizaje' => 'resultados']);
+    Route::get('resultados-aprendizaje/{resultadoAprendizaje}/tareas', [TareasController::class, 'tareasByRA']);
 
     // --------------------------------------------------
     // EVIDENCIAS
@@ -92,6 +89,7 @@ Route::prefix('v1')->group(function () {
         'matriculas' => 'matricula'
     ]);
     Route::middleware(['auth:sanctum'])->get('modulos-matriculados', [MatriculasController::class, "modulosMatriculados"]);
+    Route::middleware(['auth:sanctum'])->post('matriculas', [MatriculasController::class, 'matriculasLote']);
 
     // --------------------------------------------------
     // RESULTADOS APRENDIZAJE

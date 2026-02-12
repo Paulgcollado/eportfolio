@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Tarea extends Model
 {
@@ -11,5 +12,10 @@ class Tarea extends Model
 
     protected $table = 'tareas';
 
-    protected $fillable = ['criterios_evaluacion_id', 'fecha_apertura', 'fecha_cierre', 'activo', 'observaciones'];
+    protected $fillable = ['fecha_apertura', 'fecha_cierre', 'activo', 'observaciones'];
+
+    public function criteriosEvaluacion(): BelongsToMany
+    {
+        return $this->belongsToMany(CriterioEvaluacion::class, 'criterios_tareas', 'tarea_id', 'criterio_evaluacion_id');
+    }
 }
