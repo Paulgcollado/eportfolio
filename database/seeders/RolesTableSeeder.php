@@ -17,7 +17,7 @@ class RolesTableSeeder extends Seeder
         foreach (self::$roles as $rol) {
             Rol::insert(["name" => $rol]);
         }
-
+        $this->command->info('¡Tabla ROLES inicializada con datos!');
     }
 
     public static $roles = [

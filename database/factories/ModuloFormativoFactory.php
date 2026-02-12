@@ -26,7 +26,7 @@ class ModuloFormativoFactory extends Factory
             'curso_escolar' => fake()->words(3, true),
             'centro' => fake()->words(3, true),
             'docente_id' => User::factory(),
-            'descripcion' => fake()->paragraph()
+            'descripcion' => fake()->paragraph(2)
         ];
     }
 }

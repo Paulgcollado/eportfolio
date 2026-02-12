@@ -20,7 +20,7 @@ class CriteriosTareasTableSeeder extends Seeder
             ]);
         }
 
-        $this->command->info('¡Tabla criterios_tareas inicializada con datos!');
+        $this->command->info('¡Tabla CRITERIOS TAREAS inicializada con datos!');
     }
 
     public static $criterios_tareas = [

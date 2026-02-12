@@ -22,5 +22,6 @@ class UsersTableSeeder extends Seeder
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
+        $this->command->info('¡Tabla USUARIOS inicializada con datos!');
     }
 }

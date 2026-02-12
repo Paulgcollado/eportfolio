@@ -22,7 +22,7 @@ class ComentariosTableSeeder extends Seeder
             ]);
         }
 
-        $this->command->info('¡Tabla comentarios inicializada con datos!');
+        $this->command->info('¡Tabla COMENTARIOS inicializada con datos!');
     }
 
     public static $comentarios = [

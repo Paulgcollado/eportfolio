@@ -22,7 +22,7 @@ class AsignacionesTableSeeder extends Seeder
             ]);
         }
 
-        $this->command->info('¡Tabla asignaciones inicializada con datos!');
+        $this->command->info('¡Tabla ASIGNACIONES inicializada con datos!');
     }
 
     public static $asignaciones = [

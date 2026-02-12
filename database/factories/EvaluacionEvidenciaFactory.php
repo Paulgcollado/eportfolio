@@ -22,7 +22,7 @@ class EvaluacionEvidenciaFactory extends Factory
             'evidencia_id' => Evidencia::factory(),
             'user_id' => User::factory(),
             'puntuacion' => fake()->randomFloat(2, 0, 10),
-            'estado_validacion' => fake()->randomElement(['pendiente', 'aprobada', 'rechazada']),
+            'estado' => fake()->randomElement(['pendiente', 'aprobada', 'rechazada']),
             'observaciones' => fake()->paragraph(),
         ];
     }

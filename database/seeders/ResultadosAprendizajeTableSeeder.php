@@ -23,7 +23,7 @@ class ResultadosAprendizajeTableSeeder extends Seeder
                 'orden' => $resultado_aprendizaje['orden'],
             ]);
         }
-        $this->command->info('¡Tabla resultados_aprendizajes inicializada con datos!');
+        $this->command->info('¡Tabla RESULTADOS APRENDIZAJE inicializada con datos!');
     }
 
     public static $resultados_aprendizaje = array(

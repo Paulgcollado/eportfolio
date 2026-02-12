@@ -22,7 +22,7 @@ class FamiliasProfesionalesTableSeeder extends Seeder
             ]);
         }
 
-        $this->command->info('¡Tabla familias_profesionales inicializada con datos!');
+        $this->command->info('¡Tabla FAMILIAS PROFESIONALES inicializada con datos!');
     }
 
 /* `marcapersonalfp`.`familias_profesionales` */

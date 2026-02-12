@@ -15,5 +15,6 @@ class EvaluacionesEvidenciasTableSeeder extends Seeder
     {
         EvaluacionEvidencia::truncate();
         EvaluacionEvidencia::factory(40)->create();
+        $this->command->info('¡Tabla EVALUACIONES EVIDENCIAS inicializada con datos!');
     }
 }

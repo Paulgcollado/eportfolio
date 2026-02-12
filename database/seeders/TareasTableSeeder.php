@@ -15,5 +15,6 @@ class TareasTableSeeder extends Seeder
     {
         Tarea::truncate();
         Tarea::factory(50)->create();
+        $this->command->info('¡Tabla TAREAS inicializada con datos!');
     }
 }

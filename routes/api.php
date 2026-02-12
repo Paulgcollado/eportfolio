@@ -50,7 +50,7 @@ Route::prefix('v1')->group(function () {
             'ciclos-formativos' => 'cicloFormativo',
             'modulos-formativos' => 'moduloFormativo'
         ]);
-    Route::get('modulos-impartidos', [ModuloFormativoController::class, "modulosImpartidos"]);
+    Route::middleware(['auth:sanctum'])->get('modulos-impartidos', [ModuloFormativoController::class, "modulosImpartidos"]);
 
 
     // --------------------------------------------------
