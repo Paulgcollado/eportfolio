@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PortfolioImportController;
 use App\Http\Controllers\CiclosFormativosController;
 use App\Http\Controllers\CriteriosEvaluacionController;
 use App\Http\Controllers\FamiliasProfesionalesController;
@@ -99,6 +100,21 @@ Route::prefix('evidencias')->group(function () {
         Route::post('store', [EvidenciasController::class, 'store']);
         Route::put('update/{id}', [EvidenciasController::class, 'update']) -> where('id', '[0-9]+');
     });
+});
+
+
+Route::middleware(['auth'])->group(function () {
+    // Formulario de importación
+    Route::get('/portfolio/import', [PortfolioImportController::class, 'showImportForm'])
+        ->name('portfolio.import.form');
+
+    // Importar desde JSON Resume
+    Route::post('/portfolio/import/json-resume', [PortfolioImportController::class, 'importJsonResume'])
+        ->name('portfolio.import.json-resume');
+
+    // Importar desde GitHub
+    Route::post('/portfolio/import/github', [PortfolioImportController::class, 'importGitHub'])
+        ->name('portfolio.import.github');
 });
 
 
