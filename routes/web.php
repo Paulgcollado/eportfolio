@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\PortfolioImportController;
+
 use App\Http\Controllers\CiclosFormativosController;
 use App\Http\Controllers\CriteriosEvaluacionController;
 use App\Http\Controllers\FamiliasProfesionalesController;
@@ -103,6 +104,7 @@ Route::prefix('evidencias')->group(function () {
 });
 
 
+// ----------------------------------------
 Route::middleware(['auth'])->group(function () {
     // Formulario de importación
     Route::get('/portfolio/import', [PortfolioImportController::class, 'showImportForm'])
@@ -119,3 +121,4 @@ Route::middleware(['auth'])->group(function () {
 
 
 require __DIR__.'/auth.php';
+require __DIR__.'/analisis.php';
