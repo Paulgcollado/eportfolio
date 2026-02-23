@@ -8,6 +8,7 @@ use App\Http\Controllers\FamiliasProfesionalesController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ResultadosAprendizajesController;
 use App\Http\Controllers\EvidenciasController;
+use App\Http\Controllers\MailController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -118,6 +119,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/portfolio/import/github', [PortfolioImportController::class, 'importGitHub'])
         ->name('portfolio.import.github');
 });
+
+Route::get('mail/prueba', [MailController::class, 'prueba']);
 
 
 require __DIR__.'/auth.php';
